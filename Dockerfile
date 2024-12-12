@@ -8,8 +8,6 @@ COPY pom.xml .
 
 COPY .mvn .mvn
 COPY src src
-# Add this line to copy events.json into the image
-COPY events.json /app/events.json
 
 
 # make mvnw executable
@@ -21,6 +19,7 @@ FROM eclipse-temurin:23-jre-noble
 WORKDIR /app
 
 COPY --from=builder /src/target/MOCK_SSF-0.0.1-SNAPSHOT.jar app.jar
+COPY events.json /app/events.json
 
 ENV PORT=8080
 
