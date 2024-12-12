@@ -1,4 +1,4 @@
-FROM eclipse-temurin:23-noble AS builder
+FROM eclipse-temurin:23-jre-noble AS builder
 
 WORKDIR /src
 
@@ -12,7 +12,6 @@ COPY src src
 
 # make mvnw executable
 RUN chmod a+x mvnw && /src/mvnw package -Dmaven.test.skip=true
-# /src/target/revision-0.0.1-SNAPSHOT.jar
 
 FROM eclipse-temurin:23-jre-noble
 
