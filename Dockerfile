@@ -1,4 +1,4 @@
-FROM eclipse-temurin:23-jre-noble AS builder
+FROM eclipse-temurin:23-jre AS builder
 
 WORKDIR /src
 
