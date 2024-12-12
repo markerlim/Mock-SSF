@@ -41,6 +41,16 @@ public class MockSsfApplication implements CommandLineRunner {
             }
         } else {
             logger.warn("No file argument provided, using default: /app/events.json");
+
+			try {
+                List<Event> listOfEvents = DatabaseService.readFile("/app/events.json");
+                for (Event e : listOfEvents) {
+                    logger.debug("Event read from file: {}", e.toPrintString());
+                }
+            } catch (IOException e) {
+                logger.error("Error reading file: {}", "/app/events.json", e);
+                throw e;  // Rethrow the exception
+            }
         }
 
         SpringApplication.run(MockSsfApplication.class, args);
@@ -67,6 +77,19 @@ public class MockSsfApplication implements CommandLineRunner {
             }
         } else {
             logger.warn("No file argument provided, using default: /app/events.json");
+			logger.info("Reading events from file: {}", "/app/events.json");
+
+            try {
+                List<Event> listOfEvents = DatabaseService.readFile("/app/events.json");
+                logger.info("Total events read: {}", listOfEvents.size());
+                for (Event e : listOfEvents) {
+                    logger.debug("Saving event to Redis: {}", e.toPrintString());
+                    redisRepo.saveEvent(e);
+                }
+            } catch (IOException e) {
+                logger.error("Error reading file: {}", "/app/events.json", e);
+                throw e;  // Rethrow the exception
+            }
         }
     }
 }
