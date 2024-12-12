@@ -9,6 +9,8 @@ COPY pom.xml .
 COPY .mvn .mvn
 COPY src src
 
+COPY events.json /app/events.json
+
 RUN chmod a+x ./mvnw && ./mvnw clean package -Dmaven.test.skip=true
 
 FROM openjdk:23-jdk
@@ -18,7 +20,7 @@ WORKDIR ${DEPLOY_DIR}
 
 COPY --from=builder /app/target/MOCK_SSF-0.0.1-SNAPSHOT.jar app.jar
 
-RUN curl -o /app/events.json https://raw.githubusercontent.com/your-username/your-repository/main/events.json
+COPY --from=builder /app/events.json /app/events.json
 
 ENV SERVER_PORT=4000
 EXPOSE ${SERVER_PORT}
