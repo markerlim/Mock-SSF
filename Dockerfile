@@ -1,27 +1,25 @@
-FROM eclipse-temurin:23-jre AS builder
+FROM openjdk:23-jdk AS builder
 
-WORKDIR /src
+ARG APP_DIR=/app
+WORKDIR ${APP_DIR}
 
-# copy files
 COPY mvnw .
+COPY mvnw.cmd .
 COPY pom.xml .
-
 COPY .mvn .mvn
 COPY src src
 
+RUN chmod a+x ./mvnw && ./mvnw clean package -Dmaven.test.skip=true
 
-# make mvnw executable
-RUN chmod a+x mvnw && /src/mvnw package -Dmaven.test.skip=true
+FROM openjdk:23-jdk
 
-FROM eclipse-temurin:23-jre-noble
+ARG DEPLOY_DIR=/app
+WORKDIR ${DEPLOY_DIR}
 
-WORKDIR /app
-
-COPY --from=builder /src/target/MOCK_SSF-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder /app/target/MOCK_SSF-0.0.1-SNAPSHOT.jar app.jar
 COPY events.json /app/events.json
 
-ENV PORT=8080
+ENV SERVER_PORT=4000
+EXPOSE ${SERVER_PORT}
 
-EXPOSE ${PORT}
-
-ENTRYPOINT SERVER_PORT=${PORT} java -jar app.jar
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
