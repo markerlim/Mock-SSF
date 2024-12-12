@@ -1,0 +1,49 @@
+<!--View 0 - This is the Event Listing page where events records are
+read from a Redis and displayed as a table structure format.-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <title>Event Details</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">All Events</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Event Name</th>
+            <th>Event Size</th>
+            <th>Event Date</th>
+            <th>Participants</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="event, iterStat : ${listofevents}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td>
+              <a
+                th:href="@{/events/register/{id}(id=${event.eventId})}"
+                th:text="${event.eventName}"
+              ></a>
+            </td>
+            <td th:text="${event.eventSize}"></td>
+            <td th:text="${#dates.format(event.eventDate, 'yyyy-MM-dd')}"></td>
+            <td th:text="${event.participants}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

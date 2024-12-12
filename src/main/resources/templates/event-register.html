@@ -1,0 +1,67 @@
+<!--View 1 - On clicking the 'Register' button of the event item in View 0,
+user will be directed to the Register Event page. If there are form validations error, 
+it will remain on this view itself and the respective
+error message pertaining to the fields will be displayed.-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <title>Event Details</title>
+    <!-- Bootstrap CSS -->
+    <link 
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+
+        <h2 class="text-left mb-4">Register Event</h2>
+        <div >
+          <div>You have chosen to register for the following event:</div>
+          <strong><h3 th:text="${event.eventName}"></h3></strong>
+          <div th:text="${#dates.format(event.eventDate, 'yyyy-MM-dd')}"></div>
+        </div>        
+        <form th:object="${user}" th:action="@{/events/register/{id}(id=${event.eventId})}" method="POST">
+          <div class="mb-3">
+              <label for="fullName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="fullName" th:field="*{fullName}" placeholder="Enter your name">
+              <div class="text-danger" th:if="*{fullName != null}" th:errors="*{fullName}"></div>
+          </div>
+      
+          <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Enter your email">
+              <div class="text-danger" th:if="*{email != null}" th:errors="*{email}"></div>
+          </div>
+      
+          <div class="mb-3">
+              <label for="mobile" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="mobile" th:field="*{mobile}" placeholder="Enter your phone number">
+              <div class="text-danger" th:if="*{mobile != null}" th:errors="*{mobile}"></div>
+          </div>
+      
+          <div class="mb-3">
+              <label for="dob" class="form-label">Date of Birth</label>
+              <input type="date" class="form-control" id="dob" th:field="*{dob}">
+              <div class="text-danger" th:if="*{dob != null}" th:errors="*{dob}"></div>
+          </div>
+      
+          <div class="mb-3">
+              <label for="tickets" class="form-label">Number of tickets</label>
+              <input type="number" class="form-control" id="tickets" th:field="*{tickets}" placeholder="Enter no. of tickets">
+              <div class="text-danger" th:if="*{tickets != null}" th:errors="*{tickets}"></div>
+          </div>
+      
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
