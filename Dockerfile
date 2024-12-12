@@ -17,7 +17,8 @@ ARG DEPLOY_DIR=/app
 WORKDIR ${DEPLOY_DIR}
 
 COPY --from=builder /app/target/MOCK_SSF-0.0.1-SNAPSHOT.jar app.jar
-COPY events.json /app/events.json
+
+RUN curl -o /app/events.json https://raw.githubusercontent.com/your-username/your-repository/main/events.json
 
 ENV SERVER_PORT=4000
 EXPOSE ${SERVER_PORT}
