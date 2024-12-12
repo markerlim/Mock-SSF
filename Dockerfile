@@ -8,6 +8,9 @@ COPY pom.xml .
 
 COPY .mvn .mvn
 COPY src src
+# Add this line to copy events.json into the image
+COPY events.json /app/events.json
+
 
 # make mvnw executable
 RUN chmod a+x mvnw && /src/mvnw package -Dmaven.test.skip=true

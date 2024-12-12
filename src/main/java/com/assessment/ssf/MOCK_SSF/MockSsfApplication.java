@@ -36,7 +36,7 @@ public class MockSsfApplication implements CommandLineRunner {
 	public void run(String... args) throws IOException {
 
 		if (args.length > 0) {
-			String fileName = args[0];
+			String fileName = args.length > 0 ? args[0] : "/app/events.json";
 			List<Event>listofevents = DatabaseService.readFile(fileName);
 
 			for(Event e : listofevents){
